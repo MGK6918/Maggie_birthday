@@ -454,18 +454,18 @@
                     this.y = y;
                     this.color = color;
                     this.velocity = {
-                        x: (Math.random() - 0.5) * 8,
-                        y: (Math.random() - 0.5) * 8
+                        x: (Math.random() - 0.5) * 14, // Bigger explosion spread (was 8)
+                        y: (Math.random() - 0.5) * 14  // Bigger explosion spread (was 8)
                     };
                     this.alpha = 1;
-                    this.friction = 0.98;
+                    this.friction = 0.97;
                     this.gravity = 0.05;
                 }
                 draw() {
                     ctx.save();
                     ctx.globalAlpha = this.alpha;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2, false);
+                    ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2, false); // Slightly thicker stars
                     ctx.fillStyle = this.color;
                     ctx.fill();
                     ctx.restore();
@@ -482,23 +482,33 @@
             }
 
             function createFirework(x, y) {
-                const colors = ['#ff9a9e', '#fecfef', '#ffb199', '#ff0844', '#ffffff', '#ffd700'];
+                // Includes the purple colors to match your title!
+                const colors = ['#a855f7', '#d8b4fe', '#ff9a9e', '#fecfef', '#ffffff', '#ffd700'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                for (let i = 0; i < 40; i++) {
+                
+                // MASSIVE EXPLOSION: 100 particles instead of 40
+                for (let i = 0; i < 100; i++) {
                     particles.push(new Particle(x, y, color));
                 }
             }
 
-            // Auto-fire fireworks randomly
+            // RAPID FIRE: Launches every 350ms instead of 800ms
             setInterval(() => {
                 if(document.body.classList.contains('night-mode')){
                     createFirework(
                         Math.random() * canvas.width, 
-                        (Math.random() * canvas.height * 0.6) // Keep them in the upper 60% of the screen
+                        (Math.random() * canvas.height * 0.6) 
                     );
-                }
-            }, 800);
 
+                    // 50% chance to launch a SECOND firework at the exact same time!
+                    if(Math.random() > 0.5) {
+                        createFirework(
+                            Math.random() * canvas.width, 
+                            (Math.random() * canvas.height * 0.5) 
+                        );
+                    }
+                }
+            }, 350);
             function animate() {
                 requestAnimationFrame(animate);
                 ctx.fillStyle = 'rgba(11, 12, 16, 0.2)'; // Fades out old frames for trails
