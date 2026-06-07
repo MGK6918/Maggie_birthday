@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday My Love 🌷</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #D8CBE8; /* Pale Purple Background */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100dvh;
+            color: #3B2C45;
+            transition: background-color 2s ease; /* For the night sky transition */
+        }
+
+        body.night-mode {
+            background-color: #0b0c10; /* Dark night sky */
+            color: #ffffff;
+        }
+
+        /* LIQUID GOOEY BACKGROUND */
+        .liquid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100dvh;
+            z-index: -3;
+            filter: url('#goo'); 
+            -webkit-filter: url('#goo');
+            transition: opacity 2s ease;
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: fluidMove 12s infinite alternate ease-in-out;
+            opacity: 0.9;
+        }
+
+        .blob:nth-child(1) { width: 350px; height: 350px; background: #FFFFFF; top: -10%; left: -20%; animation-duration: 14s; }
+        .blob:nth-child(2) { width: 400px; height: 400px; background: #EAE0F5; bottom: -15%; right: -20%; animation-duration: 18s; }
+        .blob:nth-child(3) { width: 300px; height: 300px; background: #F4EEFA; top: 40%; left: 20%; animation-duration: 16s; }
+
+        @keyframes fluidMove {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 50%; }
+            50% { border-radius: 40% 60% 60% 40% / 40% 50% 50% 60%; }
+            100% { transform: translate(60px, 100px) scale(1.1) rotate(20deg); border-radius: 50% 50% 40% 60% / 60% 40% 50% 50%; }
+        }
+
+        /* FLOATING WHITE TULIPS */
+        #tulip-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100dvh;
+            z-index: -2;
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+
+        .tulip {
+            position: absolute;
+            bottom: -50px;
+            font-size: 28px;
+            filter: grayscale(100%) brightness(5) drop-shadow(0 0 4px rgba(255,255,255,0.8));
+            -webkit-filter: grayscale(100%) brightness(5) drop-shadow(0 0 4px rgba(255,255,255,0.8));
+            opacity: 0.7;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(-10deg); }
+            50% { transform: translateY(-55dvh) rotate(15deg); }
+            100% { transform: translateY(-110dvh) rotate(-10deg); }
+        }
+
+        /* FIREWORKS CANVAS */
+        #fireworks {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100dvh;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+
+        body.night-mode #fireworks {
+            opacity: 1;
+        }
+        body.night-mode .liquid-bg, body.night-mode #tulip-container {
+            opacity: 0; /* Hide day elements at night */
+        }
+
+        /* GLASS CARDS */
+        .card-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px;
+            padding: 35px 25px;
+            width: 88%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glass-card.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        body.night-mode .glass-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        h2 { font-size: 22px; margin-bottom: 12px; font-weight: 600; line-height: 1.3;}
+        p { font-size: 15px; margin-bottom: 22px; line-height: 1.6; }
+
+        button {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            color: #5D4071;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:active { transform: scale(0.94); }
+        
+        body.night-mode button {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* PAGE 2: THE LOVE TREE */
+        #tree-container {
+            display: none;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #tree-container.grown {
+            display: block;
+            opacity: 1;
+        }
+
+        .tree {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+        }
+
+        .trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 60px;
+            background: #8b5a2b;
+            border-radius: 5px;
+        }
+
+        .leaf {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Different positions for the heart leaves */
+        .leaf:nth-child(1) { top: 10px; left: 10px; transition-delay: 0.1s; }
+        .leaf:nth-child(2) { top: -10px; left: 35px; transition-delay: 0.3s; }
+        .leaf:nth-child(3) { top: 10px; left: 60px; transition-delay: 0.5s; }
+        .leaf:nth-child(4) { top: 35px; left: -5px; transition-delay: 0.7s; }
+        .leaf:nth-child(5) { top: 35px; left: 75px; transition-delay: 0.9s; }
+        .leaf:nth-child(6) { top: -25px; left: 15px; font-size: 18px; transition-delay: 1.1s; }
+        .leaf:nth-child(7) { top: -25px; left: 55px; font-size: 18px; transition-delay: 1.3s; }
+
+        .grown .leaf {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reveal-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d12e69;
+            opacity: 0;
+            transition: opacity 1s ease 2s; /* Waits for tree to grow */
+        }
+        .grown .reveal-text { opacity: 1; }
+
+        /* IMAGES LAYOUT (Page 3) */
+        .image-text-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 12px;
+            border-radius: 20px;
+        }
+
+        .image-text-row:nth-child(even) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .img-wrapper {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-content {
+            font-size: 13px;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* PAGE 5: TITLE CARD */
+        .huge-text {
+            font-size: 38px;
+            font-weight: 800;
+            background: -webkit-linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Filter for Liquid Gooey Background -->
+    <svg width="0" height="0" style="position:absolute;">
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="25" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10" result="goo" />
+            <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+    </svg>
+
+    <!-- Day Background Elements -->
+    <div class="liquid-bg">
+        <div class="blob"></div>
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+    <div id="tulip-container"></div>
+
+    <!-- Night Background Elements -->
+    <canvas id="fireworks"></canvas>
+
+    <div class="card-container">
+        
+        <!-- PAGE 1: The Intro -->
+        <div class="glass-card active" id="page1">
+            <h2>Did you think I forgot the day? 🤔</h2>
+            <p>Even with all these miles between us, I could never forget the best day of the year...</p>
+            <p>The day the most beautiful girl was born.</p>
+            <button onclick="nextPage(2)">Next 🤍</button>
+        </div>
+
+        <!-- PAGE 2: The Tree -->
+        <div class="glass-card" id="page2">
+            <h2 id="tree-title">I have a little seed for you...</h2>
+            <p id="tree-subtitle">Tap the button below to plant it.</p>
+            
+            <button id="plant-btn" onclick="growTree()">Plant the seed 🌱</button>
+
+            <div id="tree-container">
+                <div class="tree">
+                    <div class="trunk"></div>
+                    <div class="leaf">❤️</div>
+                    <div class="leaf">💖</div>
+                    <div class="leaf">💕</div>
+                    <div class="leaf">💗</div>
+                    <div class="leaf">💞</div>
+                    <div class="leaf">💖</div>
+                    <div class="leaf">❤️</div>
+                </div>
+                <p class="reveal-text">The world got its luckiest beauty since your arrival ✨</p>
+                <button onclick="nextPage(3)" style="margin-top: 15px;">Continue 🥺</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: Missing Her + Pics -->
+        <div class="glass-card" id="page3" style="max-height: 85dvh; overflow-y: auto;">
+            <h2>I miss you so much... 🥺</h2>
+            
+            <div class="image-text-row">
+                <div class="img-wrapper">
+                    
+                    <img src="o.png" alt="Us" onerror="this.src='https://via.placeholder.com/150/D8CBE8/FFFFFF?text=Us+1'">
+                </div>
+                <div class="text-content">
+                    Not being able to hold you is the hardest part. But my heart is right there next to yours.
+                </div>
+            </div>
+
+            <div class="image-text-row">
+                <div class="img-wrapper">
+                    <!-- REPLACE 'image2.jpg' with your image -->
+                    <img src="r.png" alt="Us" onerror="this.src='https://via.placeholder.com/150/D8CBE8/FFFFFF?text=Us+2'">
+                </div>
+                <div class="text-content">
+                    Every memory we make together keeps me going. You are my absolute favorite person.
+                </div>
+            </div>
+
+            <button onclick="nextPage(4)" style="margin-top: 5px;">Next ❤️</button>
+        </div>
+
+        <!-- PAGE 4: The Build Up -->
+        <div class="glass-card" id="page4">
+            <h2>Okay...</h2>
+            <p>Enough of me being emotional. Are you ready for the main thing?</p>
+            <button onclick="triggerNightSky()">Ready! ✨</button>
+        </div>
+
+        <!-- PAGE 5: The Finale -->
+        <div class="glass-card" id="page5">
+            <h1 class="huge-text">HAPPY<br>BIRTHDAY MAGGIE...!</h1>
+            <p> my amazing girlfriend. I love you to the moon and back!</p>
+            <p>Wish I was there to kiss you today. Have the best day ever! 🎆</p>
+        </div>
+
+    </div>
+
+    <script>
+        /* TULIPS GENERATOR */
+        function createTulips() {
+            const container = document.getElementById('tulip-container');
+            for (let i = 0; i < 15; i++) {
+                let tulip = document.createElement('div');
+                tulip.className = 'tulip';
+                tulip.innerHTML = '🌷';
+                tulip.style.left = (Math.random() * 90) + 'vw';
+                tulip.style.animationDuration = (Math.random() * 10 + 10) + 's'; 
+                tulip.style.animationDelay = (Math.random() * 10) + 's';
+                tulip.style.transform = `scale(${Math.random() * 0.6 + 0.7})`;
+                container.appendChild(tulip);
+            }
+        }
+        window.onload = createTulips;
+
+        /* PAGE TRANSITION LOGIC */
+        function nextPage(pageNumber) {
+            const currentCard = document.querySelector('.glass-card.active');
+            currentCard.classList.remove('active');
+            setTimeout(() => {
+                const nextCard = document.getElementById('page' + pageNumber);
+                nextCard.classList.add('active');
+            }, 350); 
+        }
+
+        /* TREE GROW LOGIC */
+        function growTree() {
+            document.getElementById('plant-btn').style.display = 'none';
+            document.getElementById('tree-title').style.display = 'none';
+            document.getElementById('tree-subtitle').style.display = 'none';
+            
+            const treeContainer = document.getElementById('tree-container');
+            treeContainer.style.display = 'block';
+            
+            // Tiny delay to allow CSS to register the display block before adding the animation class
+            setTimeout(() => {
+                treeContainer.classList.add('grown');
+            }, 50);
+        }
+
+        /* NIGHT SKY & FIREWORKS LOGIC */
+        function triggerNightSky() {
+            document.body.classList.add('night-mode');
+            nextPage(5);
+            startFireworks();
+        }
+
+        /* FIREWORKS CANVAS ENGINE */
+        function startFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+
+            class Particle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.color = color;
+                    this.velocity = {
+                        x: (Math.random() - 0.5) * 8,
+                        y: (Math.random() - 0.5) * 8
+                    };
+                    this.alpha = 1;
+                    this.friction = 0.98;
+                    this.gravity = 0.05;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+                update() {
+                    this.draw();
+                    this.velocity.x *= this.friction;
+                    this.velocity.y *= this.friction;
+                    this.velocity.y += this.gravity;
+                    this.x += this.velocity.x;
+                    this.y += this.velocity.y;
+                    this.alpha -= 0.01;
+                }
+            }
+
+            function createFirework(x, y) {
+                const colors = ['#ff9a9e', '#fecfef', '#ffb199', '#ff0844', '#ffffff', '#ffd700'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                for (let i = 0; i < 40; i++) {
+                    particles.push(new Particle(x, y, color));
+                }
+            }
+
+            // Auto-fire fireworks randomly
+            setInterval(() => {
+                if(document.body.classList.contains('night-mode')){
+                    createFirework(
+                        Math.random() * canvas.width, 
+                        (Math.random() * canvas.height * 0.6) // Keep them in the upper 60% of the screen
+                    );
+                }
+            }, 800);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.fillStyle = 'rgba(11, 12, 16, 0.2)'; // Fades out old frames for trails
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach((particle, i) => {
+                    if (particle.alpha > 0) {
+                        particle.update();
+                    } else {
+                        particles.splice(i, 1);
+                    }
+                });
+            }
+            animate();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+    </script>
+</body>
+</html>
